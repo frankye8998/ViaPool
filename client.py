@@ -14,6 +14,29 @@ function send() {
     if (this.readyState == 4 && this.status == 200) {
         alert(this.responseText);
         data = JSON.parse(this.responseText)["content"];
+        from_lat = Number(data[0]["start"].split(",")[0]);
+        from_lng = Number(data[0]["start"].split(",")[1]);
+        dest_lat = Number(data[0]["dest"].split(",")[0]);
+        dest_lng = Number(data[0]["dest"].split(",")[1]);
+        markerIF = new google.maps.Marker({
+            position: {lat: from_lat, lng: from_lng},
+            map: map,
+            title: data[0]["name"],
+            icon: {
+                url: "http://maps.google.com/mapfiles/ms/icons/purple.png"
+            }
+        });
+        markerID = new google.maps.Marker({
+            position: {lat: dest_lat, lng: dest_lng},
+            map: map,
+            title: data[0]["name"],
+            icon: {
+                url: "http://maps.google.com/mapfiles/ms/icons/pink.png"
+            }
+        });
+        markerIF.setMap(map);
+        markerID.setMap(map);
+        data.shift();
         for (i = 0; i < data.length; i++) {
             alert(data);
             if (data.length == 0) {
@@ -331,7 +354,7 @@ class QGoogleMap(QtWebEngineWidgets.QWebEngineView):
         channel.registerObject("qGoogleMap", self)
         self.page().runJavaScript(JS)
 
-        html = HTML.replace("API_KEY", "XXXXXXXXXX")
+        html = HTML.replace("API_KEY", "XXXXXXXXXXX")
         self.setHtml(html)
         self.loadFinished.connect(self.on_loadFinished)
         self.initialized = False
@@ -457,7 +480,7 @@ class QGoogleMap(QtWebEngineWidgets.QWebEngineView):
 if __name__ == '__main__':
     import sys
 
-    API_KEY = "XXXXXXXXX"
+    API_KEY = XXXXXXXXXX"
 
     app = QtWidgets.QApplication(sys.argv)
     w = QGoogleMap(api_key=API_KEY)
